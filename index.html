@@ -15,46 +15,93 @@
     ul { margin-top:0; }
     .meta { font-size:0.95em; color:#444; background:#f1f8ff; padding:10px; border-radius:6px; }
     .script-block { margin-top:16px; }
+    .lang-switch { position:fixed; top:10px; right:10px; padding:6px 12px; background:#0366d6; color:#fff; border:none; border-radius:4px; cursor:pointer; }
   </style>
 </head>
 <body>
 
-  <h2>.md 轉 html</h2>
+<button class="lang-switch" onclick="switchLang()">切換到简体</button>
 
+<!-- 繁體 -->
+<div id="lang-zh-Hant">
+  <h2>.md 轉 html</h2>
+  <blockquote>
+    <p>在 <a href="https://108028.github.io/morse_code/" target="_blank" rel="noopener noreferrer">https://108028.github.io/morse_code/</a> 開啟此頁面</p>
+  </blockquote>
+  <h3>用作擴充功能</h3>
+  <p>此儲存庫可以作為 <strong>外掛</strong> 新增到 MakeCode 中。</p>
+  <ul>
+    <li>開啟 <a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer">https://makecode.microbit.org/</a></li>
+    <li>點擊 <strong>新專案</strong></li>
+    <li>點擊齒輪圖示選單下的 <strong>擴充功能</strong></li>
+    <li>搜尋 <code>https://github.com/108028/morse_code</code> 並匯入</li>
+  </ul>
+  <h3>編輯此專案</h3>
+  <p>在 MakeCode 中編輯此儲存庫。</p>
+  <ul>
+    <li>開啟 <a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer">https://makecode.microbit.org/</a></li>
+    <li>點擊 <strong>匯入</strong>，然後點擊 <strong>匯入 URL</strong></li>
+    <li>貼上 <strong>https://github.com/108028/morse_code</strong> 並點擊匯入</li>
+  </ul>
+  <h4>中繼資料（用於搜尋、渲染）</h4>
+  <p>for PXT/microbit</p>
+  <p class="meta">備註：上方範例中的 &lt;script&gt; 是用於嵌入 MakeCode，如果放到 GitHub Pages 等靜態網站會自動渲染。</p>
+</div>
+
+<!-- 簡體 -->
+<div id="lang-zh-Hans" style="display:none;">
+  <h2>.md 转 html</h2>
   <blockquote>
     <p>在 <a href="https://108028.github.io/morse_code/" target="_blank" rel="noopener noreferrer">https://108028.github.io/morse_code/</a> 打开此页面</p>
   </blockquote>
-
   <h3>用作扩展</h3>
-
   <p>此仓库可以作为 <strong>插件</strong> 添加到 MakeCode 中。</p>
-
   <ul>
     <li>打开 <a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer">https://makecode.microbit.org/</a></li>
     <li>点击 <strong>新项目</strong></li>
     <li>点击齿轮图标菜单下的 <strong>扩展</strong></li>
     <li>搜索 <code>https://github.com/108028/morse_code</code> 并导入</li>
   </ul>
-
   <h3>编辑此项目</h3>
-
   <p>在 MakeCode 中编辑此仓库。</p>
-
   <ul>
     <li>打开 <a href="https://makecode.microbit.org/" target="_blank" rel="noopener noreferrer">https://makecode.microbit.org/</a></li>
     <li>点击 <strong>导入</strong>，然后点击 <strong>导入 URL</strong></li>
     <li>粘贴 <strong>https://github.com/108028/morse_code</strong> 并点击导入</li>
   </ul>
-
   <h4>元数据（用于搜索、渲染）</h4>
-
   <p>for PXT/microbit</p>
+  <p class="meta">备注：上方示例中的 &lt;script&gt; 用于嵌入 MakeCode，放到 GitHub Pages 等静态网站会自动渲染。</p>
+</div>
 
-  <div class="script-block">
-    <pre><code>&lt;script src="https://makecode.com/gh-pages-embed.js"&gt;&lt;/script&gt;&lt;script&gt;makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");&lt;/script&gt;</code></pre>
-  </div>
+<!-- 完整程式預覽 -->
+<h3>完整嵌入範例</h3>
+<div class="script-block">
+<pre><code>&lt;script src="https://makecode.com/gh-pages-embed.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");
+&lt;/script&gt;
+</code></pre>
+</div>
 
-  <p class="meta">備註：上方 &lt;script&gt; 標籤為嵌入 MakeCode 的腳本。如果你把此 HTML 放到靜態網站（例如 GitHub Pages），該腳本會嘗試載入 MakeCode 的渲染器。若要在本地檔案直接測試，確保你的瀏覽器允許載入外部腳本或將檔案部署到網路伺服器上。</p>
+<script>
+function switchLang(){
+  const hant = document.getElementById('lang-zh-Hant');
+  const hans = document.getElementById('lang-zh-Hans');
+  const btn = document.querySelector('.lang-switch');
+  if(hant.style.display !== 'none'){
+    hant.style.display = 'none';
+    hans.style.display = 'block';
+    btn.textContent = '切換到繁體';
+    document.documentElement.lang = 'zh-Hans';
+  }else{
+    hans.style.display = 'none';
+    hant.style.display = 'block';
+    btn.textContent = '切換到简体';
+    document.documentElement.lang = 'zh-Hant';
+  }
+}
+</script>
 
 </body>
 </html>
