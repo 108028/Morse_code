@@ -171,65 +171,72 @@ function 摩斯密碼hi () {
 }
 function 錄製 () {
     if (input.buttonIsPressed(Button.B)) {
-        while (input.buttonIsPressed(Button.B)) {
-            basic.showLeds(`
-                . . . . .
-                . . . . .
-                . . . . .
-                . . . . .
-                . . . . .
-                `)
-            重設()
-        }
-        while (true) {
-            if (input.buttonIsPressed(Button.A)) {
-                音樂(2000, 50, 255, V2)
-                摩斯密碼.push("1")
-                led.plotBrightness(2, 2, 255)
-            } else {
-                摩斯密碼.push("0")
-                led.plotBrightness(2, 2, 50)
+        basic.pause(50)
+        if (!(input.buttonIsPressed(Button.A))) {
+            while (input.buttonIsPressed(Button.B)) {
+                basic.showLeds(`
+                    . . . . .
+                    . . . . .
+                    . . . . .
+                    . . . . .
+                    . . . . .
+                    `)
+                重設()
             }
-            if (input.buttonIsPressed(Button.B)) {
-                basic.showIcon(IconNames.Yes)
-                break;
+            while (true) {
+                if (input.buttonIsPressed(Button.A)) {
+                    音樂(2000, 50, 255, V2)
+                    摩斯密碼.push("1")
+                    led.plotBrightness(2, 2, 255)
+                } else {
+                    摩斯密碼.push("0")
+                    led.plotBrightness(2, 2, 50)
+                }
+                if (input.buttonIsPressed(Button.B)) {
+                    basic.showIcon(IconNames.Yes)
+                    break;
+                }
+                basic.pause(50)
             }
-            basic.pause(50)
+            while (input.buttonIsPressed(Button.AB)) {
+            	
+            }
+            basic.pause(100)
         }
-        while (input.buttonIsPressed(Button.AB)) {
-        	
-        }
-        basic.pause(100)
     }
     圖像列表[模式].showImage(0)
 }
 function 播放 () {
     if (input.buttonIsPressed(Button.A)) {
-        while (input.buttonIsPressed(Button.A)) {
-            basic.clearScreen()
-            if (input.buttonIsPressed(Button.B)) {
-                break;
-            }
-        }
+        basic.pause(50)
         if (!(input.buttonIsPressed(Button.B))) {
-            運算暫存 = 0
-            basic.clearScreen()
-            for (let index = 0; index < 摩斯密碼.length; index++) {
-                if (摩斯密碼[運算暫存] == "1") {
-                    音樂(2000, 50, 255, V2)
-                    led.plotBrightness(2, 2, 255)
-                } else {
-                    led.plotBrightness(2, 2, 50)
-                }
-                運算暫存 += 1
+            while (input.buttonIsPressed(Button.A)) {
+                basic.clearScreen()
                 basic.pause(50)
                 if (input.buttonIsPressed(Button.B)) {
                     break;
                 }
             }
-            basic.pause(100)
-            basic.clearScreen()
-            圖像列表[模式].showImage(0)
+            if (!(input.buttonIsPressed(Button.B))) {
+                運算暫存 = 0
+                basic.clearScreen()
+                for (let index = 0; index < 摩斯密碼.length; index++) {
+                    if (摩斯密碼[運算暫存] == "1") {
+                        音樂(2000, 50, 255, V2)
+                        led.plotBrightness(2, 2, 255)
+                    } else {
+                        led.plotBrightness(2, 2, 50)
+                    }
+                    運算暫存 += 1
+                    basic.pause(50)
+                    if (input.buttonIsPressed(Button.B)) {
+                        break;
+                    }
+                }
+                basic.pause(100)
+                basic.clearScreen()
+                圖像列表[模式].showImage(0)
+            }
         }
     }
 }
@@ -310,7 +317,7 @@ radio.onReceivedNumber(function (receivedNumber) {
             音樂(2000, 3, 255, V2)
             led.plotBrightness(2, 0, 255)
         } else if (receivedNumber == 0) {
-            led.plotBrightness(2, 0, 100)
+            led.plotBrightness(2, 0, 50)
         } else {
             led.plotBrightness(2, 0, 0)
         }
@@ -322,7 +329,7 @@ let 圖像列表: Image[] = []
 let 握手包: string[] = []
 let 模式 = 0
 let V2 = false
-V2 = false
+V2 = true
 radio.sendString("")
 摩斯密碼hi()
 模式 = 0
@@ -343,19 +350,25 @@ basic.forever(function () {
         }
     } else if (模式 == 3) {
         if (input.buttonIsPressed(Button.B)) {
-            播放握手包()
-            圖像列表[模式].showImage(0)
+            basic.pause(50)
+            if (input.buttonIsPressed(Button.B)) {
+                播放握手包()
+                圖像列表[模式].showImage(0)
+            }
         }
         if (input.buttonIsPressed(Button.A)) {
-            images.createImage(`
-                . # # . .
-                . # # # .
-                . # # # .
-                . # # # .
-                . # # # .
-                `).scrollImage(1, 200)
-            讀取大小(握手包)
-            圖像列表[模式].showImage(0)
+            basic.pause(50)
+            if (input.buttonIsPressed(Button.A)) {
+                images.createImage(`
+                    . # # . .
+                    . # # # .
+                    . # # # .
+                    . # # # .
+                    . # # # .
+                    `).scrollImage(1, 200)
+                讀取大小(握手包)
+                圖像列表[模式].showImage(0)
+            }
         }
     } else if (模式 == 6) {
         if (input.buttonIsPressed(Button.A)) {
@@ -363,7 +376,7 @@ basic.forever(function () {
             led.plotBrightness(2, 4, 255)
         } else {
             radio.sendNumber(0)
-            led.plotBrightness(2, 4, 100)
+            led.plotBrightness(2, 4, 50)
         }
     } else {
     	
