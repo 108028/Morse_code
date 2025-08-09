@@ -49,13 +49,6 @@ function 啟動結束 () {
         . # # # .
         . # # # .
         . # # # .
-        `),
-    images.createImage(`
-        . . . . .
-        . . . . .
-        # # # # #
-        . . . . .
-        . . . . .
         `)
     ]
     images.createBigImage(`
@@ -102,46 +95,21 @@ function 讀取大小 (檔案: any[]) {
         break;
     }
 }
-input.onButtonPressed(Button.AB, function () {
-    模式 += 1
-    if (7 == 模式) {
-        模式 = 0
-    }
-    圖像列表[模式].showImage(0)
-    radio.sendNumber(2)
-})
 function 單播放 (數據: string) {
     if (數據 == "1") {
-        led.plotBrightness(2, 2, 255)
-        音樂(2000, 1, 125, V2)
-    } else {
-        led.plotBrightness(2, 2, 100)
-    }
-}
-radio.onReceivedString(function (receivedString) {
-    if (模式 == 3) {
-        if (receivedString == "##") {
-            圖像列表[模式].showImage(0)
-        } else {
-            接收(receivedString)
-        }
-    }
-})
-function 音樂 (起始: number, 時長: number, 響度: number, V2: boolean) {
-    if (V2) {
         music.play(music.createSoundExpression(
         WaveShape.Sine,
-        起始,
-        起始,
-        響度,
-        響度,
-        時長,
+        2000,
+        2000,
+        125,
+        125,
+        1,
         SoundExpressionEffect.None,
         InterpolationCurve.Linear
         ), music.PlaybackMode.InBackground)
+        led.plotBrightness(2, 2, 255)
     } else {
-        music.setTempo(60)
-        music.play(music.tonePlayable(784, 時長 / 1000), music.PlaybackMode.InBackground)
+        led.plotBrightness(2, 2, 100)
     }
 }
 function 摩斯密碼hi () {
@@ -169,6 +137,22 @@ function 摩斯密碼hi () {
         }
     }
 }
+input.onButtonPressed(Button.AB, function () {
+    模式 += 1
+    if (6 == 模式) {
+        模式 = 0
+    }
+    圖像列表[模式].showImage(0)
+})
+radio.onReceivedString(function (receivedString) {
+    if (模式 == 3) {
+        if (receivedString == "##") {
+            圖像列表[模式].showImage(0)
+        } else {
+            接收(receivedString)
+        }
+    }
+})
 function 錄製 () {
     if (input.buttonIsPressed(Button.B)) {
         while (input.buttonIsPressed(Button.B)) {
@@ -183,9 +167,18 @@ function 錄製 () {
         }
         while (true) {
             if (input.buttonIsPressed(Button.A)) {
-                音樂(2000, 50, 255, V2)
                 摩斯密碼.push("1")
                 led.plotBrightness(2, 2, 255)
+                music.play(music.createSoundExpression(
+                WaveShape.Sine,
+                2000,
+                2000,
+                255,
+                255,
+                50,
+                SoundExpressionEffect.None,
+                InterpolationCurve.Linear
+                ), music.PlaybackMode.InBackground)
             } else {
                 摩斯密碼.push("0")
                 led.plotBrightness(2, 2, 50)
@@ -216,7 +209,16 @@ function 播放 () {
             basic.clearScreen()
             for (let index = 0; index < 摩斯密碼.length; index++) {
                 if (摩斯密碼[運算暫存] == "1") {
-                    音樂(2000, 50, 255, V2)
+                    music.play(music.createSoundExpression(
+                    WaveShape.Sine,
+                    2000,
+                    2000,
+                    255,
+                    255,
+                    50,
+                    SoundExpressionEffect.None,
+                    InterpolationCurve.Linear
+                    ), music.PlaybackMode.InBackground)
                     led.plotBrightness(2, 2, 255)
                 } else {
                     led.plotBrightness(2, 2, 50)
@@ -248,7 +250,16 @@ function 播放握手包 () {
         basic.clearScreen()
         for (let index = 0; index < 握手包.length; index++) {
             if (握手包[運算暫存] == "1") {
-                音樂(2000, 50, 255, V2)
+                music.play(music.createSoundExpression(
+                WaveShape.Sine,
+                2000,
+                2000,
+                255,
+                255,
+                50,
+                SoundExpressionEffect.None,
+                InterpolationCurve.Linear
+                ), music.PlaybackMode.InBackground)
                 led.plotBrightness(2, 2, 255)
             } else {
                 led.plotBrightness(2, 2, 50)
@@ -282,7 +293,16 @@ function 發送 () {
             for (let index = 0; index < 摩斯密碼.length; index++) {
                 if (摩斯密碼[運算暫存] == "1") {
                     led.plotBrightness(2, 2, 255)
-                    音樂(2000, 1, 125, V2)
+                    music.play(music.createSoundExpression(
+                    WaveShape.Sine,
+                    2000,
+                    2000,
+                    125,
+                    125,
+                    1,
+                    SoundExpressionEffect.None,
+                    InterpolationCurve.Linear
+                    ), music.PlaybackMode.InBackground)
                     radio.sendString("1")
                 } else {
                     led.plotBrightness(2, 2, 50)
@@ -290,10 +310,11 @@ function 發送 () {
                 }
                 運算暫存 += 1
                 basic.pause(2)
-                if (input.buttonIsPressed(Button.B)) {
+                if (input.buttonIsPressed(Button.A)) {
                     break;
                 }
             }
+            basic.pause(100)
             basic.clearScreen()
             圖像列表[模式].showImage(0)
         }
@@ -304,25 +325,11 @@ function 發送 () {
 function 重設 () {
     摩斯密碼 = [""]
 }
-radio.onReceivedNumber(function (receivedNumber) {
-    if (模式 == 6) {
-        if (receivedNumber == 1) {
-            音樂(2000, 3, 255, V2)
-            led.plotBrightness(2, 0, 255)
-        } else if (receivedNumber == 0) {
-            led.plotBrightness(2, 0, 100)
-        } else {
-            led.plotBrightness(2, 0, 0)
-        }
-    }
-})
 let 運算暫存 = 0
 let 摩斯密碼: string[] = []
 let 圖像列表: Image[] = []
 let 握手包: string[] = []
 let 模式 = 0
-let V2 = false
-V2 = false
 radio.sendString("")
 摩斯密碼hi()
 模式 = 0
@@ -356,14 +363,6 @@ basic.forever(function () {
                 `).scrollImage(1, 200)
             讀取大小(握手包)
             圖像列表[模式].showImage(0)
-        }
-    } else if (模式 == 6) {
-        if (input.buttonIsPressed(Button.A)) {
-            radio.sendNumber(1)
-            led.plotBrightness(2, 4, 255)
-        } else {
-            radio.sendNumber(0)
-            led.plotBrightness(2, 4, 100)
         }
     } else {
     	
