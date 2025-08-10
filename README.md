@@ -1,5 +1,5 @@
 
-> 在 [https://108028.github.io/morse_code/](https://108028.github.io/morse_code/) 打开此页面
+> 在 [https://108028.github.io/Morse_code/](https://108028.github.io/Morse_code/) 打开此页面
 
 ## 用作扩展
 
